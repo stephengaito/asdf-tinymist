@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This asdf shell script provides useful URLS for TinyMist
+
+echo GitHub https://github.com/Myriad-Dreamin/tinymist
+echo ""

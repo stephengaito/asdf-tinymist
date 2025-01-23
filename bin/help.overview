@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# This asdf shell script provides a brief overview of TinyMist
+
+echo "An implementation of the Language Server Protocol for Typst"
+echo ""

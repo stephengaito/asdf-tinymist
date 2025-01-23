@@ -1,0 +1,62 @@
+#!/bin/sh
+
+# This asdf shell script downloads the correct version of the tinymist
+# language server
+
+# NOTE: at the moment this ONLY works on Linux using an Intel processor.
+
+trap 'rm -rf "$ASDF_TINYMIST_TMPDIR"' EXIT
+
+ASDF_TIMYMIST_TMPDIR=$(mktemp -d /tmp/asdf-tinymist-XXXXXX)
+ASDF_DOWNLOAD_PATH=${ASDF_DOWNLOAD_PATH-$ASDF_TINYMIST_TMPDIR}
+SYSTEM=$(uname -s)
+CPU=$(uname -m)
+PLATFORM="unknown"
+
+case "$CPU" in
+  i*86)
+    ;;
+  x86_64|ia64)
+    PLATFORM="x86_64"
+    ;;
+  *)
+    exit 1
+esac
+case "$SYSTEM" in
+  Linux)
+    if command -v ldd >/dev/null && ldd --version 2>&1 | grep -E '^musl' >/dev/null
+    then
+      exit 1
+    else
+      PLATFORM="$PLATFORM-unkown-linux-gnu"
+    fi
+    ;;
+  *)
+    exit 1
+esac
+
+PLATFORM=tinymist-$PLATFORM.tar.gz
+
+cd $ASDF_DOWNLOAD_PATH
+
+echo Platform: $PLATFORM
+
+tinymistURL=$(curl --silent \
+  https://github.com/latex-lsp/Myriad-Dreamin/tinymist/expanded_assets/v$ASDF_INSTALL_VERSION \
+  | grep $PLATFORM | grep href | tr ' ' '\n' | grep href | tr '=' '\n' \
+  | grep -v href | tr -d '"' )
+
+tinymistFILE=$(basename $tinymistURL)
+
+echo "TinyMist  URL: $tinymistURL"
+echo "TinyMist FILE: $tinymistFILE"
+
+wget https://github.com$tinymistURL
+
+if test $? -ne 0
+then
+  rm $tinymistFILE
+  exit 1
+else
+  mv $tinymistFILE tinymist.tar.gz
+fi
