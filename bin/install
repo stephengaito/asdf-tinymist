@@ -12,7 +12,7 @@ cp -R $ASDF_DOWNLOAD_PATH/* $ASDF_INSTALL_PATH
 
 cd $ASDF_INSTALL_PATH
 
-tar xvf $ASDF_DOWNLOAD_PATH/tinymist.tar.gz
+tar xvf $ASDF_DOWNLOAD_PATH/tinymist.tar.gz --strip-components=1
 
 echo "------------------------------------------------------------------"
 echo "asdf-tinymist:"

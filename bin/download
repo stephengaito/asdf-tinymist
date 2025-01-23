@@ -28,7 +28,7 @@ case "$SYSTEM" in
     then
       exit 1
     else
-      PLATFORM="$PLATFORM-unkown-linux-gnu"
+      PLATFORM="$PLATFORM-unknown-linux-gnu"
     fi
     ;;
   *)
@@ -41,10 +41,17 @@ cd $ASDF_DOWNLOAD_PATH
 
 echo Platform: $PLATFORM
 
+echo $ASDF_INSTALL_VERSION
+
+#curl --silent \
+#  https://github.com/Myriad-Dreamin/tinymist/releases/expanded_assets/v$ASDF_INSTALL_VERSION \
+#  | grep $PLATFORM | grep href | tr ' ' '\n' | grep href | tr '=' '\n' \
+#  | grep -v href | grep -v sha256 | tr -d '"'
+  
 tinymistURL=$(curl --silent \
-  https://github.com/latex-lsp/Myriad-Dreamin/tinymist/expanded_assets/v$ASDF_INSTALL_VERSION \
+  https://github.com/Myriad-Dreamin/tinymist/releases/expanded_assets/v$ASDF_INSTALL_VERSION \
   | grep $PLATFORM | grep href | tr ' ' '\n' | grep href | tr '=' '\n' \
-  | grep -v href | tr -d '"' )
+  | grep -v href | grep -v sha256 | tr -d '"')
 
 tinymistFILE=$(basename $tinymistURL)
 
